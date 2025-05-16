@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EmoSense - Real-Time Emotion Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        async function updateStats() {
+            const res = await fetch('/emotion_stats');
+            const data = await res.json();
+            let statsDiv = document.getElementById('stats');
+            statsDiv.innerHTML = "";
+            for (const [emotion, count] of Object.entries(data)) {
+                const emotionClass = emotion.toLowerCase();
+statsDiv.innerHTML += `<div class="stat ${emotionClass}"><strong>${emotion}</strong>: ${count}</div>`;
+
+            }
+        }
+
+        setInterval(updateStats, 2000);
+    </script>
+</head>
+<body>
+    <h1>😊 EmoSense</h1>
+<h3 style="color:black; margin-top:-20px;">Detect Emotions in Real-Time from Your Face</h3>
+
+    <div class="container">
+        <div class="video-box">
+            <img src="{{ url_for('video_feed') }}" width="640" height="480">
+        </div>
+        <div class="stats-box">
+            <h2>Emotion Tracker 📊</h2>
+            <div id="stats"></div>
+        </div>
+    </div>
+</body>
+</html>
